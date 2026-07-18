@@ -1,0 +1,68 @@
+# SPIR-V dictionary for parser_fuzzer.
+# Tokens are little-endian 32-bit words as they appear in a SPIR-V binary module.
+# The fuzzer overwrites words[0..1] (magic + version), so the productive tokens are the
+# instruction words: each is (word_count << 16) | opcode, little-endian.
+#
+# Magic / header (still useful as structural anchors elsewhere in the stream).
+magic_le="\x03\x02\x23\x07"
+version_1_0="\x00\x00\x01\x00"
+version_1_3="\x00\x03\x01\x00"
+version_1_6="\x00\x06\x01\x00"
+generator_zero="\x00\x00\x00\x00"
+
+# --- Common instruction words: low16 = OpCode, high16 = word count (little-endian). ---
+# OpCapability (op=17, wc=2) -> 0x00020011
+op_capability="\x11\x00\x02\x00"
+# OpExtInstImport (op=11, wc=6) -> 0x0006000b
+op_extinstimport="\x0b\x00\x06\x00"
+# OpMemoryModel (op=14, wc=3) -> 0x0003000e
+op_memorymodel="\x0e\x00\x03\x00"
+# OpEntryPoint (op=15, wc=4) -> 0x0004000f
+op_entrypoint="\x0f\x00\x04\x00"
+# OpExecutionMode (op=16, wc=3) -> 0x00030010
+op_executionmode="\x10\x00\x03\x00"
+# OpSource (op=3, wc=3) -> 0x00030003
+op_source="\x03\x00\x03\x00"
+# OpName (op=5, wc=3) -> 0x00030005
+op_name="\x05\x00\x03\x00"
+# OpDecorate (op=71, wc=3) -> 0x00030047
+op_decorate="\x47\x00\x03\x00"
+# OpMemberDecorate (op=72, wc=4) -> 0x00040048
+op_memberdecorate="\x48\x00\x04\x00"
+# OpTypeVoid (op=19, wc=2) -> 0x00020013
+op_typevoid="\x13\x00\x02\x00"
+# OpTypeFloat (op=22, wc=3) -> 0x00030016
+op_typefloat="\x16\x00\x03\x00"
+# OpTypeInt (op=21, wc=4) -> 0x00040015
+op_typeint="\x15\x00\x04\x00"
+# OpTypeVector (op=23, wc=4) -> 0x00040017
+op_typevector="\x17\x00\x04\x00"
+# OpTypePointer (op=32, wc=4) -> 0x00040020
+op_typepointer="\x20\x00\x04\x00"
+# OpTypeFunction (op=33, wc=3) -> 0x00030021
+op_typefunction="\x21\x00\x03\x00"
+# OpConstant (op=43, wc=4) -> 0x0004002b
+op_constant="\x2b\x00\x04\x00"
+# OpVariable (op=59, wc=4) -> 0x0004003b
+op_variable="\x3b\x00\x04\x00"
+# OpFunction (op=54, wc=5) -> 0x00050036
+op_function="\x36\x00\x05\x00"
+# OpFunctionEnd (op=56, wc=1) -> 0x00010038
+op_functionend="\x38\x00\x01\x00"
+# OpLabel (op=248, wc=2) -> 0x000200f8
+op_label="\xf8\x00\x02\x00"
+# OpReturn (op=253, wc=1) -> 0x000100fd
+op_return="\xfd\x00\x01\x00"
+# OpStore (op=62, wc=3) -> 0x0003003e
+op_store="\x3e\x00\x03\x00"
+# OpLoad (op=61, wc=4) -> 0x0004003d
+op_load="\x3d\x00\x04\x00"
+
+# --- Common operand literals ---
+# "GLSL.std.450" extended instruction set import string (null-padded to word boundary).
+glsl_std_450="GLSL.std.450\x00\x00\x00\x00"
+# "main" entry-point name.
+main="main\x00\x00\x00\x00"
+# Storage classes / models as small integers.
+one="\x01\x00\x00\x00"
+two="\x02\x00\x00\x00"
