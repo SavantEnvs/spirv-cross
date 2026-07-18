@@ -1,0 +1,9 @@
+project: savantenvs/spirv-cross
+target: parser_fuzzer
+cmds:
+  - cmd: /mayhem/parser_fuzzer
+    libfuzzer: true
+    dictionary: /mayhem/mayhem/parser_fuzzer.dict
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/parser_fuzzer/testsuite
